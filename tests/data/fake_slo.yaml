@@ -1,0 +1,28 @@
+apiVersion: slo-kit/v1
+name: checkout-availability
+service: checkout
+description: FakeSource-compatible spec for CLI tests.
+objective: 0.999
+window: 30d
+sli:
+  good_query: 'good[{window}]'
+  total_query: 'total[{window}]'
+labels:
+  team: payments
+alerting:
+  conditions:
+    - name: fast_burn
+      long_window: 1h
+      short_window: 5m
+      threshold: 14.4
+      severity: page
+    - name: slow_burn
+      long_window: 6h
+      short_window: 30m
+      threshold: 6
+      severity: page
+    - name: slower_burn
+      long_window: 24h
+      short_window: 2h
+      threshold: 3
+      severity: ticket

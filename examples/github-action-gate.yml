@@ -1,0 +1,43 @@
+# Example: block a deploy when the SLO error budget is spent.
+#
+# Copy into .github/workflows/ in your service repo. The `slo-kit gate` step
+# exits non-zero when less than --min-budget of the error budget remains, which
+# fails the job and blocks the deploy.
+
+name: Deploy gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+jobs:
+  slo-gate:
+    name: SLO error-budget gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run slo-kit gate
+        uses: docker://ghcr.io/slo-kit/slo-kit:latest
+        with:
+          args: >-
+            gate slo/checkout_slo.yaml
+            --source ${{ vars.PROMETHEUS_URL }}
+            --min-budget 0.1
+            --block-on-firing
+
+  # Alternatively, without Docker:
+  slo-gate-pip:
+    name: SLO error-budget gate (pip)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install slo-kit
+      - name: Gate on remaining budget
+        env:
+          PROMETHEUS_URL: ${{ vars.PROMETHEUS_URL }}
+        run: slo-kit gate slo/checkout_slo.yaml --source "$PROMETHEUS_URL" --min-budget 0.1

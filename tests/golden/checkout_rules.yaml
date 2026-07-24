@@ -1,0 +1,102 @@
+groups:
+- name: slo:checkout-availability
+  rules:
+  - record: slo:sli_error:ratio_rate1h
+    expr: "1 - (\n  sum(rate(http_requests_total{job=\"checkout\",code!~\"5..\"}[1h]))\n\
+      \  /\n  sum(rate(http_requests_total{job=\"checkout\"}[1h]))\n)"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      window: 1h
+  - record: slo:sli_error:ratio_rate5m
+    expr: "1 - (\n  sum(rate(http_requests_total{job=\"checkout\",code!~\"5..\"}[5m]))\n\
+      \  /\n  sum(rate(http_requests_total{job=\"checkout\"}[5m]))\n)"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      window: 5m
+  - record: slo:sli_error:ratio_rate6h
+    expr: "1 - (\n  sum(rate(http_requests_total{job=\"checkout\",code!~\"5..\"}[6h]))\n\
+      \  /\n  sum(rate(http_requests_total{job=\"checkout\"}[6h]))\n)"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      window: 6h
+  - record: slo:sli_error:ratio_rate30m
+    expr: "1 - (\n  sum(rate(http_requests_total{job=\"checkout\",code!~\"5..\"}[30m]))\n\
+      \  /\n  sum(rate(http_requests_total{job=\"checkout\"}[30m]))\n)"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      window: 30m
+  - record: slo:sli_error:ratio_rate24h
+    expr: "1 - (\n  sum(rate(http_requests_total{job=\"checkout\",code!~\"5..\"}[24h]))\n\
+      \  /\n  sum(rate(http_requests_total{job=\"checkout\"}[24h]))\n)"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      window: 24h
+  - record: slo:sli_error:ratio_rate2h
+    expr: "1 - (\n  sum(rate(http_requests_total{job=\"checkout\",code!~\"5..\"}[2h]))\n\
+      \  /\n  sum(rate(http_requests_total{job=\"checkout\"}[2h]))\n)"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      window: 2h
+  - alert: CheckoutAvailabilityFastBurn
+    expr: "(\n  slo:sli_error:ratio_rate1h{slo=\"checkout-availability\"} > 0.0144\n\
+      \  and\n  slo:sli_error:ratio_rate5m{slo=\"checkout-availability\"} > 0.0144\n\
+      )"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      severity: page
+      condition: fast_burn
+    annotations:
+      summary: 'SLO checkout-availability: fast_burn burn rate exceeded (14.4x)'
+      description: 'Error budget for SLO ''checkout-availability'' is burning at more
+        than 14.4x over 1h and 5m. Objective: 0.999.'
+  - alert: CheckoutAvailabilitySlowBurn
+    expr: "(\n  slo:sli_error:ratio_rate6h{slo=\"checkout-availability\"} > 0.006\n\
+      \  and\n  slo:sli_error:ratio_rate30m{slo=\"checkout-availability\"} > 0.006\n\
+      )"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      severity: page
+      condition: slow_burn
+    annotations:
+      summary: 'SLO checkout-availability: slow_burn burn rate exceeded (6x)'
+      description: 'Error budget for SLO ''checkout-availability'' is burning at more
+        than 6x over 6h and 30m. Objective: 0.999.'
+  - alert: CheckoutAvailabilitySlowerBurn
+    expr: "(\n  slo:sli_error:ratio_rate24h{slo=\"checkout-availability\"} > 0.003\n\
+      \  and\n  slo:sli_error:ratio_rate2h{slo=\"checkout-availability\"} > 0.003\n\
+      )"
+    labels:
+      slo: checkout-availability
+      service: checkout
+      team: payments
+      tier: '1'
+      severity: ticket
+      condition: slower_burn
+    annotations:
+      summary: 'SLO checkout-availability: slower_burn burn rate exceeded (3x)'
+      description: 'Error budget for SLO ''checkout-availability'' is burning at more
+        than 3x over 24h and 2h. Objective: 0.999.'

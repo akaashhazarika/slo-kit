@@ -1,0 +1,30 @@
+apiVersion: slo-kit/v1
+name: checkout-availability
+service: checkout
+description: Checkout API availability — fraction of non-5xx responses.
+objective: 0.999          # three nines
+window: 30d               # rolling 30-day window
+sli:
+  # {window} is substituted with each budget / alert window at evaluation time.
+  good_query: 'sum(rate(http_requests_total{job="checkout",code!~"5.."}[{window}]))'
+  total_query: 'sum(rate(http_requests_total{job="checkout"}[{window}]))'
+labels:
+  team: payments
+  tier: "1"
+alerting:
+  conditions:
+    - name: fast_burn
+      long_window: 1h
+      short_window: 5m
+      threshold: 14.4
+      severity: page
+    - name: slow_burn
+      long_window: 6h
+      short_window: 30m
+      threshold: 6
+      severity: page
+    - name: slower_burn
+      long_window: 24h
+      short_window: 2h
+      threshold: 3
+      severity: ticket

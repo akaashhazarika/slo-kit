@@ -1,0 +1,6 @@
+# Default owners for everything in the repo.
+* @slo-kit/maintainers
+
+# The core SLO math is the product — require careful review.
+/src/slo_kit/budget/       @slo-kit/maintainers
+/src/slo_kit/alerts/       @slo-kit/maintainers

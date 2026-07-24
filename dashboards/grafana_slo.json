@@ -1,0 +1,141 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "Prometheus data source scraping slo-kit recording rules",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    },
+    {
+      "name": "VAR_SLO",
+      "type": "constant",
+      "label": "SLO name",
+      "value": "checkout-availability"
+    }
+  ],
+  "annotations": { "list": [] },
+  "editable": true,
+  "graphTooltip": 1,
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["slo", "sre", "slo-kit"],
+  "title": "slo-kit — SLO overview",
+  "uid": "slo-kit-overview",
+  "templating": {
+    "list": [
+      {
+        "name": "slo",
+        "type": "constant",
+        "query": "${VAR_SLO}",
+        "current": { "text": "${VAR_SLO}", "value": "${VAR_SLO}" },
+        "hide": 0,
+        "label": "SLO name"
+      },
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {}
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "1h burn rate",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 6 },
+              { "color": "red", "value": 14.4 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "slo:sli_error:ratio_rate1h{slo=\"$slo\"} / on() group_left() (1 - $slo:objective)",
+          "legendFormat": "1h burn rate"
+        }
+      ]
+    },
+    {
+      "type": "gauge",
+      "title": "Error budget remaining (30d)",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 0.1 },
+              { "color": "green", "value": 0.25 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "clamp_min(1 - (slo:sli_error:ratio_rate30d{slo=\"$slo\"} / 0.001), 0)",
+          "legendFormat": "budget remaining"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Burn rates by window",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": {
+        "defaults": { "unit": "none", "custom": { "drawStyle": "line", "fillOpacity": 10 } }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "slo:sli_error:ratio_rate1h{slo=\"$slo\"} / 0.001",
+          "legendFormat": "1h"
+        },
+        {
+          "refId": "B",
+          "expr": "slo:sli_error:ratio_rate6h{slo=\"$slo\"} / 0.001",
+          "legendFormat": "6h"
+        },
+        {
+          "refId": "C",
+          "expr": "slo:sli_error:ratio_rate24h{slo=\"$slo\"} / 0.001",
+          "legendFormat": "24h"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "SLI error ratio (5m)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "percentunit" } },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "slo:sli_error:ratio_rate5m{slo=\"$slo\"}",
+          "legendFormat": "error ratio (5m)"
+        }
+      ]
+    }
+  ]
+}
