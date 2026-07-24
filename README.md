@@ -3,9 +3,10 @@
 > **Stop hand-rolling SLO alerts.** Define SLOs as code and get correct
 > multi-window burn-rate Prometheus alerts for free.
 
-[![CI](https://github.com/slo-kit/slo-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/slo-kit/slo-kit/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/slo-kit.svg)](https://pypi.org/project/slo-kit/)
-[![Python](https://img.shields.io/pypi/pyversions/slo-kit.svg)](https://pypi.org/project/slo-kit/)
+[![CI](https://github.com/akaashhazarika/slo-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/akaashhazarika/slo-kit/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/slokit-sre.svg)](https://pypi.org/project/slokit-sre/)
+[![Python](https://img.shields.io/pypi/pyversions/slokit-sre.svg)](https://pypi.org/project/slokit-sre/)
+[![Docs](https://img.shields.io/badge/docs-mkdocs-blue.svg)](https://akaashhazarika.github.io/slo-kit/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 `slo-kit` turns raw Prometheus / OpenTelemetry metrics into:
@@ -22,10 +23,13 @@ hand-rolling brittle PromQL**.
 ## Install
 
 ```bash
-pip install slo-kit
+pip install slokit-sre        # requires Python 3.11+
 # or
-docker run --rm ghcr.io/slo-kit/slo-kit --help
+docker run --rm ghcr.io/akaashhazarika/slo-kit:latest --help
 ```
+
+> The PyPI distribution is `slokit-sre`; the import package (`slo_kit`) and the
+> `slo-kit` CLI command are unchanged.
 
 ## Quickstart (< 5 minutes)
 

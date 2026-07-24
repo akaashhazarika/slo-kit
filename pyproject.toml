@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "slokit-sre"
-version = "1.0.0"
+version = "1.0.1"
 description = "Define SLOs as code and get correct multi-window burn-rate Prometheus alerts for free."
 readme = "README.md"
 requires-python = ">=3.11"

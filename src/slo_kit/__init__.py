@@ -24,7 +24,7 @@ from .sources.otel import OTelSource
 from .sources.prometheus import PrometheusSource
 from .spec import SpecError, dump_spec, load_spec, load_specs
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 __all__ = [
     "SLI",
