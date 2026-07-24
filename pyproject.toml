@@ -95,6 +95,7 @@ ignore_errors = true
 minversion = "8.0"
 addopts = "-ra --strict-markers"
 testpaths = ["tests"]
+pythonpath = ["."]
 
 [tool.coverage.run]
 branch = true

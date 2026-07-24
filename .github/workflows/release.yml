@@ -48,5 +48,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/slo-kit/slo-kit:latest
-            ghcr.io/slo-kit/slo-kit:${{ steps.meta.outputs.version }}
+            ghcr.io/${{ github.repository_owner }}/slo-kit:latest
+            ghcr.io/${{ github.repository_owner }}/slo-kit:${{ steps.meta.outputs.version }}
