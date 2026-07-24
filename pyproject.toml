@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "slo-kit"
+name = "slokit-sre"
 version = "1.0.0"
 description = "Define SLOs as code and get correct multi-window burn-rate Prometheus alerts for free."
 readme = "README.md"
@@ -57,11 +57,11 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/slo-kit/slo-kit"
-Documentation = "https://slo-kit.github.io/slo-kit/"
-Repository = "https://github.com/slo-kit/slo-kit"
-Changelog = "https://github.com/slo-kit/slo-kit/blob/main/CHANGELOG.md"
-Issues = "https://github.com/slo-kit/slo-kit/issues"
+Homepage = "https://github.com/akaashhazarika/slo-kit"
+Documentation = "https://akaashhazarika.github.io/slo-kit/"
+Repository = "https://github.com/akaashhazarika/slo-kit"
+Changelog = "https://github.com/akaashhazarika/slo-kit/blob/main/CHANGELOG.md"
+Issues = "https://github.com/akaashhazarika/slo-kit/issues"
 
 [project.scripts]
 slo-kit = "slo_kit.cli:app"
